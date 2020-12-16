@@ -10,6 +10,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+import re
 
 
 class HBNBCommand(cmd.Cmd):
@@ -19,16 +20,16 @@ class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
 
     classes = {
-               'BaseModel': BaseModel, 'User': User, 'Place': Place,
-               'State': State, 'City': City, 'Amenity': Amenity,
-               'Review': Review
-              }
+        'BaseModel': BaseModel, 'User': User, 'Place': Place,
+        'State': State, 'City': City, 'Amenity': Amenity,
+        'Review': Review
+    }
     dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
     types = {
-             'number_rooms': int, 'number_bathrooms': int,
-             'max_guest': int, 'price_by_night': int,
-             'latitude': float, 'longitude': float
-            }
+        'number_rooms': int, 'number_bathrooms': int,
+        'max_guest': int, 'price_by_night': int,
+        'latitude': float, 'longitude': float
+    }
 
     def preloop(self):
         """Prints if isatty is false"""
@@ -73,7 +74,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is'}'\
+                    if pline[0] is '{' and pline[-1] is '}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -115,13 +116,25 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        if not args:
+
+        new_args = {}
+        listof_args = args.split()
+        for n_arg in listof_args[1:]:
+            n_arg = n_arg.split("=")
+            new_args[n_arg[0]] = n_arg[1]
+
+        if not listof_args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+
+        if listof_args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
+
+        valid_params = validate_args(new_args)
+
+        new_instance = HBNBCommand.classes[listof_args[0]]()
+        new_instance.__dict__.update(valid_params)
         storage.save()
         print(new_instance.id)
         storage.save()
@@ -319,6 +332,31 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
+
+def validate_args(new_args):
+    '''Validates the correct sintax of the parameters'''
+    valid_params = {}
+    for key, value in new_args.items():
+        is_str = re.search('^"(.*)"$', value)
+        if is_str:
+            to_cast = str
+            value = is_str.group(1)
+            value = value.replace('_', ' ')
+            value = re.sub(r'(?<!\\)"', r'\\"', value)
+        else:
+            if "." in value:
+                to_cast = float
+            else:
+                to_cast = int
+        try:
+            value = to_cast(value)  # "4.56" float("4.56")
+        except ValueError:
+            continue
+        valid_params[key] = value
+    # print(new_args)
+    return valid_params
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()

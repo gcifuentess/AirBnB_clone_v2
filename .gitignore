@@ -1,1 +1,4 @@
 *.swp
+.vscode
+__pycache__
+tags
