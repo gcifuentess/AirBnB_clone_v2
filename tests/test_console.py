@@ -369,3 +369,22 @@ class ConsoleTest(unittest.TestCase):
         self.assertTrue("'dev2': 'Dani'" in str_test)
         self.assertTrue("'dev3': 'Gabo'" in str_test)
         self.assertTrue("'school': 'Holberton'" in str_test)
+
+    def test_demo(self):
+        '''Demo Test'''
+        fun = self.test_true
+        doc = fun.__doc__
+        print("\n{}".format(doc))
+        fun()
+
+    def test_true(self):
+        '''1) True == True'''
+        result = self.cmd("Create User name=Tavo")
+        result = self.cmd("all")
+        print(result)
+        self.assertTrue(True)
+
+    def cmd(self, cmd):
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(cmd)
+            return (f.getvalue().rstrip())
