@@ -14,10 +14,10 @@ class FileStorage:
             return self.__objects
         else:
             my_dict = {}
-            for k, v in self.__objects.items():
-                name = k.split('.')
+            for key, value in self.__objects.items():
+                name = key.split('.')
                 if name[0] in str(cls):
-                    my_dict[k] = v
+                    my_dict[key] = value
             return my_dict
 
     def new(self, obj):
