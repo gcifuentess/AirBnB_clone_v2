@@ -20,7 +20,6 @@ class State(BaseModel, Base):
             for city in cities_dict.values():
                 if city.state_id == self.id:
                     list_cities.append(city)
-            return list_cities        
+            return list_cities
     else:
         cities = relationship("City", backref="state", cascade="all, delete")
-
