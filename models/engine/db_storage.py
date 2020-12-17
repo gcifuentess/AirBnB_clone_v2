@@ -1,8 +1,14 @@
 #!/usr/bin/Python3
 """This module defines a class to manage data base storage for hbnb clone"""
-from models.base_model import Base
 from sqlalchemy import create_engine, MetaData
 from os import getenv
+from models.base_model import Base, BaseModel
+from models.user import User
+from models.state import State
+from models.city import City
+from models.review import Review
+from models.place import Place
+from models.amenity import Amenity
 
 
 class DBStorage:
@@ -12,8 +18,8 @@ class DBStorage:
     __session = None
 
     classes = {
-        'BaseModel': BaseModel, 'User': User, 'Place': Place,
-        'State': State, 'City': City, 'Amenity': Amenity,
+        'User': User, 'Place': Place, 'State': State,
+        'City': City, 'Amenity': Amenity,
         'Review': Review
     }
 
@@ -36,16 +42,15 @@ class DBStorage:
 
     def all(self, cls=None):
         """query on the current database session depending of the class name"""
-        from models import User, State, City, Amenity, Place, Review
 
         objs_dict = {}
         if cls:
-            my_query = self.__session.query(cls)
+            my_query = self.__session.query(cls).all()
             for obj in my_query:
                 objs_dict[cls + "." + obj.id] = obj
         else:
-            for key, value in classes.items():
-                my_query = self.__session.query(value)
+            for key, value in self.classes.items():
+                my_query = self.__session.query(value).all()
                 for obj in my_query:
                     objs_dict[key + "." + obj.id] = obj
 
@@ -68,10 +73,7 @@ class DBStorage:
 
     def reload(self):
         """create all tables in the database"""
-        from models import Base, User, State, City, Amenity, Place, Review
         from sqlalchemy.orm import sessionmaker, scoped_session
-        # from models.user import User
-        # from models.state import State
 
         Base.metadata.create_all(self.__engine)
 
