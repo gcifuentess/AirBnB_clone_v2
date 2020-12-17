@@ -214,7 +214,7 @@ class ConsoleTest(unittest.TestCase):
             #    key = key.split('.')[0]
             #    if key == test_class:
             #        exp_len += len(str(value)) + 1
-            #if exp_len > 0:
+            # if exp_len > 0:
             #    exp_len -= 1
             len_str_test = len(str_test)
 
