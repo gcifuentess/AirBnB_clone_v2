@@ -2,9 +2,9 @@
 """ State Module for HBNB project """
 from sqlalchemy import Column, Integer, String, ForeignKey
 from models.base_model import BaseModel, Base
-from models.city import City
 from os import getenv
 from sqlalchemy.orm import relationship
+from models.city import City
 
 
 class State(BaseModel, Base):
@@ -17,10 +17,10 @@ class State(BaseModel, Base):
         @property
         def cities(self):
             '''getter for cities'''
-            # from models.__init__ import storage
             list_cities = []
             cities_dict = storage.all(City)
             for city in cities_dict.values():
                 if city.state_id == self.id:
                     list_cities.append(city)
             return list_cities
+
