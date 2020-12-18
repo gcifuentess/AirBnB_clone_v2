@@ -8,10 +8,10 @@ from sqlalchemy.orm import relationship
 from models.amenity import Amenity
 
 
-place_amenity = Table('place_amenity', Base.metadata,
-                      Column('place_id', String(60), ForeignKey('places.id')),
-                      Column('amenity_id', String(60),
-                             ForeignKey('amenities.id')))
+# place_amenity = Table('place_amenity', Base.metadata,
+#                      Column('place_id', String(60), ForeignKey('places.id')),
+#                      Column('amenity_id', String(60),
+#                             ForeignKey('amenities.id')))
 
 
 class Place(BaseModel, Base):
@@ -29,10 +29,11 @@ class Place(BaseModel, Base):
     longitude = Column(Float)
     if getenv("HBNB_TYPE_STORAGE") == "db":
         print("lola")
-        reviews = relationship("Review", backref="user",
-                               cascade="all, delete")
-        amenities = relationship("Amenity", secondary='place_amenity',
-                                 viewonly=False)
+        # reviews = relationship("Review", backref="user",
+        #                       cascade="all, delete")
+        # amenities = relationship("Amenity", secondary='place_amenity',
+        #                         viewonly=False)
+        pass
     else:
         amenity_ids = []
 

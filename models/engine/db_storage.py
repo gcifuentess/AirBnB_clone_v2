@@ -8,7 +8,7 @@ from models.state import State
 from models.city import City
 from models.review import Review
 from models.place import Place
-# from models.amenity import Amenity
+from models.amenity import Amenity
 
 
 class DBStorage:
@@ -19,7 +19,7 @@ class DBStorage:
 
     classes = {
         'User': User, 'Place': Place, 'State': State,
-        'City': City,  # 'Amenity': Amenity,
+        'City': City,  'Amenity': Amenity,
         'Review': Review
     }
 
