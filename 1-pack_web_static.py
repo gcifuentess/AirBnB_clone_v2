@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 """Compress before sending module"""
 from datetime import datetime
 import os
