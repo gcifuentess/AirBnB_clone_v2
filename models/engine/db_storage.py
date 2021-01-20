@@ -47,7 +47,7 @@ class DBStorage:
         if cls:
             my_query = self.__session.query(cls).all()
             for obj in my_query:
-                objs_dict[cls + "." + obj.id] = obj
+                objs_dict[cls.__name__ + "." + obj.id] = obj
         else:
             for key, value in self.classes.items():
                 my_query = self.__session.query(value).all()
@@ -81,3 +81,7 @@ class DBStorage:
                                        expire_on_commit=False)
         Session = scoped_session(session_factory)
         self.__session = Session()
+
+    def close(self):
+        '''closses the sqlalchemy session'''
+        self.__session.close()
