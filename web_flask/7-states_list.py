@@ -16,10 +16,7 @@ def teardown_db(exception):
 def states_list():
     from flask import render_template
     from models.state import State
-    states_dict = storage.all(State)
-    states = {}
-    for state in states_dict.values():
-        states[state.name] = state.id
+    states = storage.all(State).values()
     return render_template('7-states_list.html', states=states)
 
 
