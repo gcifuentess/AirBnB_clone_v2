@@ -6,11 +6,11 @@
     <BODY>
         <H1>States</H1>
 	<UL>
-	{% for state_name, state_id in states|dictsort %}
- 	    <LI>{{ state_id|e }}: <B>{{ state_name|e }}<B>
+	{% for state in states|sort(attribute='name') %}
+ 	    <LI>{{ state.id }}: <B>{{ state.name }}</B>
   	        <UL>
-	           {% for citi_name, citi_id in (cities[state_id])|dictsort %}
-	                <LI>{{ citi_id|e }}: <B>{{ citi_name|e }}<B></LI>
+	           {% for citi in (state.cities)|sort(attribute='name') %}
+	                <LI>{{ citi.id }}: <B>{{ citi.name }}</B></LI>
 	           {% endfor %}
 	        </UL>
 	    </LI>
