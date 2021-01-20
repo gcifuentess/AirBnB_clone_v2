@@ -34,8 +34,12 @@ def states(state_id):
         states = storage.all(State).values()
         default = 0
     else:
-        states = storage.all(State)['State.' + state_id]
-        default = 1
+        try:
+            states = storage.all(State)['State.' + state_id]
+            default = 1
+        except:
+            states = None
+            default = 2
     return render_template('9-states.html', states=states, default=default)
 
 
