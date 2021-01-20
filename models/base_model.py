@@ -38,7 +38,7 @@ class BaseModel:
                 del kwargs['__class__']
             except:
                 pass
-            print(self.__dict__)
+            # print(self.__dict__)
             self.__dict__.update(kwargs)
 
     def __str__(self):
